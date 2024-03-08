@@ -71,7 +71,7 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         update_repo_cache: true
         values:
           bandwidthManager:
@@ -141,7 +141,7 @@
           kind: CiliumL2AnnouncementPolicy
           metadata:
             name: default-l2-announcement-policy
-            namespace: '{{ cilium_vars.kubernetes.namespace }}'
+            namespace: kube-system
           spec:
             externalIPs: true
             interfaces:
@@ -157,7 +157,7 @@
           kind: CiliumLoadBalancerIPPool
           metadata:
             name: default-pool
-            namespace: '{{ cilium_vars.kubernetes.namespace }}'
+            namespace: kube-system
           spec:
             cidrs:
               - cidr: '{{ cilium_vars.kubernetes.loadbalancer.ip.pool }}'
@@ -170,7 +170,7 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         reset_values: false
         reuse_values: true
         values:
@@ -190,14 +190,14 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         reset_values: false
         reuse_values: true
         values:
           loadBalancer:
             algorithm: '{{ cilium_vars.kubernetes.loadbalancer.algorithm }}'
           maglev:
-            hashSeed: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=12) }}"
+            hashSeed: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=16) }}"
             tableSize: '{{ cilium_vars.kubernetes.loadbalancer.table_size }}'
         wait: true
       register: result
@@ -212,7 +212,7 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         reset_values: false
         reuse_values: true
         values:
@@ -223,7 +223,11 @@
           l2podAnnouncements:
             enabled: true
             interface: '{{ k3s_vars.network.interface }}'
+          loadBalancer:
+            mode: '{{ cilium_vars.kubernetes.loadbalancer.mode }}'
           routingMode: '{{ cilium_vars.kubernetes.routing.mode }}'
+          socketLB:
+            hostNamespaceOnly: true
         wait: true
       register: result
       delay: 1

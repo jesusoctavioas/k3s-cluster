@@ -19,7 +19,7 @@
             annotations:
               cert-manager.io/cluster-issuer: '{{ cloudflare_cluster_issuer }}'
             name: '{{ cilium_vars.kubernetes.hubble.ui.ingress.service }}'
-            namespace: '{{ cilium_vars.kubernetes.namespace }}'
+            namespace: kube-system
           spec:
             ingressClassName: cilium
             rules:
@@ -50,7 +50,7 @@
             annotations:
               io.cilium/lb-ipam-ips: '{{ cilium_vars.kubernetes.hubble.ui.loadbalancer.ip }}'
             name: cilium-ingress-{{ cilium_vars.kubernetes.hubble.ui.ingress.service }}
-            namespace: '{{ cilium_vars.kubernetes.namespace }}'
+            namespace: kube-system
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         wait: true
       when: cloudflare_vars.kubernetes.ingress.domain != 'disabled'
@@ -64,7 +64,7 @@
             annotations:
               io.cilium/lb-ipam-ips: '{{ cilium_vars.kubernetes.hubble.ui.loadbalancer.ip }}'
             name: '{{ cilium_vars.kubernetes.hubble.ui.ingress.service }}'
-            namespace: '{{ cilium_vars.kubernetes.namespace }}'
+            namespace: kube-system
           spec:
             type: LoadBalancer
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
@@ -76,7 +76,7 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         reset_values: false
         reuse_values: true
         values:
@@ -103,7 +103,7 @@
         chart_version: '{{ cilium_vars.kubernetes.helm.chart.version }}'
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: '{{ cilium_vars.kubernetes.helm.chart.name }}'
-        namespace: '{{ cilium_vars.kubernetes.namespace }}'
+        namespace: kube-system
         reset_values: false
         reuse_values: true
         values:

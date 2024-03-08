@@ -21,7 +21,7 @@
           apiVersion: v1
           kind: Secret
           metadata:
-            name: grafana-credentials
+            name: monitoring-grafana-secret
             namespace: '{{ prometheus_vars.kubernetes.namespace }}'
           stringData:
             password: '{{ prometheus_vars.kubernetes.grafana.user.password }}'
@@ -34,6 +34,7 @@
       kubernetes.core.helm:
         chart_ref: '{{ prometheus_vars.kubernetes.helm.repository.name }}/{{ prometheus_vars.kubernetes.helm.chart.name }}'
         chart_version: '{{ prometheus_vars.kubernetes.helm.chart.version }}'
+        create_namespace: true
         kubeconfig: '{{ k3s_vars.directory.config }}/k3s.yaml'
         name: monitoring
         namespace: '{{ prometheus_vars.kubernetes.namespace }}'
@@ -60,7 +61,7 @@
                         storage: '{{ prometheus_vars.kubernetes.alertmanager.storage }}'
           grafana:
             admin:
-              existingSecret: grafana-credentials
+              existingSecret: monitoring-grafana-secret
               passwordKey: password
               userKey: username
           kubeControllerManager:

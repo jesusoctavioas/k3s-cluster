@@ -57,11 +57,11 @@ cilium_vars:
         cluster:
           pool: 10.42.0.0/16
     loadbalancer:
-      algorithm: disabled
+      algorithm: maglev
       ip:
         pool: 192.168.4.16/28
+      mode: hybrid
       table_size: 16381
-    namespace: kube-system
     operator:
       resources:
         limits:
