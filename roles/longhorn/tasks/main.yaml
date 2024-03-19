@@ -59,7 +59,7 @@
         update_repo_cache: true
         values:
           defaultSettings:
-            nodeDownPodDeletionPolicy: '{{ longhorn_vars.pod.deletion_policy }}'
+            nodeDownPodDeletionPolicy: '{{ longhorn_vars.kubernetes.pod.deletion_policy }}'
         wait: true
       register: result
       delay: 1
